@@ -1,0 +1,4 @@
+blacklist = '686489176'
+owner = 84203003
+TOKEN = '240703250:AAG5r9hCayG9HJBLUaOuK6qs4phmyMY4JTg'
+
