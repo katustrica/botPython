@@ -2,7 +2,7 @@ import logging
 from config import *
 
 from telegram import (ReplyKeyboardMarkup)
-from telegram.ext import (Updater,  CommandHandler, MessageHandler, Filters)
+from telegram.ext import (Updater, CommandHandler, MessageHandler, Filters)
 
 # Enable logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -12,8 +12,10 @@ logger = logging.getLogger(__name__)
 
 status = 0
 messagev = ''
-dictionary = {84203003 : 666}
-name = {84203003 : 'admin'}
+dictionary = {84203003: 666,
+              295751797: 666}
+name = {84203003: 'admin',
+        295751797: 'Mask admin'}
 user = 1
 
 
@@ -54,7 +56,10 @@ def text(update, context):
         if update.message.text != 'parol123':
             name.update({update.message.from_user.id: update.message.text})
             dictionary.update({update.message.from_user.id: 3})
-            context.bot.send_message(chat_id=84203003, text='Новый клиент ' + str(name.get(update.message.from_user.id)))
+            context.bot.send_message(chat_id=84203003,
+                                     text='Новый клиент ' + str(name.get(update.message.from_user.id)))
+            context.bot.send_message(chat_id=295751797,
+                                     text='Новый клиент ' + str(name.get(update.message.from_user.id)))
             update.message.reply_text('Приветствую, ' + str(name.get(update.message.from_user.id)) +
                                       '''! Чтобы начать работать над твоим аккаунтом, мне нужно изучить твой бизнес, твою аудиторию и конкурентов.
                                       ⠀
@@ -68,6 +73,7 @@ def text(update, context):
                                                                        resize_keyboard=1))
     if dictionary.get(update.message.from_user.id) == 3:
         messagev += update.message.text + '\n'
+        messagev.replace(str(name.get(update.message.from_user.id)), '')
         if update.message.text == 'Отправить':
             messagev = messagev.replace('Отправить', '')
             update.message.reply_text(str(name.get(update.message.from_user.id)) + ''', этот этап очень важный😌
@@ -81,13 +87,21 @@ def text(update, context):
 
                                                                        resize_keyboard=1))
             context.bot.send_message(chat_id=84203003,
-                                     text='____ИНФА О КОМПАНИИ____\n - от ' + str(name.get(update.message.from_user.id)) + '\n\n' + messagev)
+                                     text='____ИНФА О КОМПАНИИ____\n - от ' + str(
+                                         name.get(update.message.from_user.id)) + '\n\n' + messagev)
+            context.bot.send_message(chat_id=295751797,
+                                     text='____ИНФА О КОМПАНИИ____\n - от ' + str(
+                                         name.get(update.message.from_user.id)) + '\n\n' + messagev)
             messagev = ''
             dictionary.update({update.message.from_user.id: 4})
         if update.message.text == 'Задать вопрос':
             messagev = messagev.replace('Задать вопрос', '')
             update.message.reply_text("мы скоро Вам ответим")
-            context.bot.send_message(chat_id=84203003, text='____ВОПРОС____\n - от ' + str(name.get(update.message.from_user.id)) + '\n\n' + messagev)
+            context.bot.send_message(chat_id=84203003, text='____ВОПРОС____\n - от ' + str(
+                name.get(update.message.from_user.id)) + '\n\n' + messagev)
+            context.bot.send_message(chat_id=295751797, text='____ВОПРОС____\n - от ' + str(
+                name.get(update.message.from_user.id)) + '\n\n' + messagev)
+
             messagev = ''
     if dictionary.get(update.message.from_user.id) == 4:
         messagev += update.message.text + '\n'
@@ -95,7 +109,11 @@ def text(update, context):
             messagev = messagev.replace('Отправить.', '')
             messagev = messagev.replace('Отправить', '')
             context.bot.send_message(chat_id=84203003,
-                                     text='____КАКИЕ ДОЛЖНЫ БЫТЬ ПОСТЫ____\n - от ' + str(name.get(update.message.from_user.id)) + '\n\n' + messagev)
+                                     text='____КАКИЕ ДОЛЖНЫ БЫТЬ ПОСТЫ____\n - от ' + str(
+                                         name.get(update.message.from_user.id)) + '\n\n' + messagev)
+            context.bot.send_message(chat_id=295751797,
+                                     text='____КАКИЕ ДОЛЖНЫ БЫТЬ ПОСТЫ____\n - от ' + str(
+                                         name.get(update.message.from_user.id)) + '\n\n' + messagev)
             messagev = ''
             update.message.reply_text('''Я уже начал обрабатывать твою информацию.⠀
             Отправь свой логин и пароль от Инстаграма, чтобы мы могли подключить:
@@ -111,9 +129,16 @@ def text(update, context):
             ''', reply_markup=ReplyKeyboardMarkup([['Отправить', 'Задать вопрос']],
 
                                                   resize_keyboard=1))
-            dictionary.update({update.message.from_user.id: 5})
+            dictionary.update({update.message.from_user.id: 8})
         if update.message.text == 'Нет особых пожеланий':
-            dictionary.update({update.message.from_user.id: 5})
+            dictionary.update({update.message.from_user.id: 8})
+            context.bot.send_message(chat_id=84203003,
+                                     text='____КАКИЕ ДОЛЖНЫ БЫТЬ ПОСТЫ____\n - от ' + str(
+                                         name.get(update.message.from_user.id)) + '\n\n' + 'нет особых пожеланий')
+            context.bot.send_message(chat_id=295751797,
+                                     text='____КАКИЕ ДОЛЖНЫ БЫТЬ ПОСТЫ____\n - от ' + str(
+                                         name.get(update.message.from_user.id)) + '\n\n' + 'нет особых пожеланий')
+
             messagev = ''
             update.message.reply_text('''Я уже начал обрабатывать твою информацию.⠀
 Отправь свой логин и пароль от Инстаграма, чтобы мы могли подключить:
@@ -128,6 +153,25 @@ def text(update, context):
 Если у тебя есть вопросы, нажми кнопку «Задать вопрос».
 ''', reply_markup=ReplyKeyboardMarkup([['Отправить', 'Задать вопрос']],
                                       resize_keyboard=1))
+        if update.message.text == 'Отправить':
+            dictionary.update({update.message.from_user.id: 4})
+            context.bot.send_message(chat_id=84203003,
+                                     text='____ЛОГИН И ПАРОЛЬ____\n - от ' + str(
+                                         name.get(update.message.from_user.id)) + '\n\n' + messagev)
+            context.bot.send_message(chat_id=295751797,
+                                     text='____ЛОГИН И ПАРОЛЬ____\n - от ' + str(
+                                         name.get(update.message.from_user.id)) + '\n\n' + messagev)
+
+            messagev = ''
+        if update.message.text == 'Задать вопрос':
+            dictionary.update({update.message.from_user.id: 4})
+            context.bot.send_message(chat_id=84203003,
+                                     text='____ВОПРОС____\n - от ' + str(
+                                         name.get(update.message.from_user.id)) + '\n\n' + messagev)
+            context.bot.send_message(chat_id=295751797,
+                                     text='____ВОПРОС____\n - от ' + str(
+                                         name.get(update.message.from_user.id)) + '\n\n' + messagev)
+            messagev = ''
     if dictionary.get(update.message.from_user.id) == 5:
         if update.message.text == 'Мне все нравится, можно публиковать':
             dictionary.update({update.message.from_user.id: 6})
@@ -151,8 +195,13 @@ def text(update, context):
             dictionary.update({update.message.from_user.id: 7})
             messagev = messagev.replace('Задать вопрос', '')
             update.message.reply_text("мы скоро Вам ответим")
+
             context.bot.send_message(chat_id=84203003,
-                                     text='____ВОПРОС О ПУБЛИКАЦИЯХ____\n - от ' + str(name.get(update.message.from_user.id)) + '\n\n' + messagev)
+                                     text='____ВОПРОС О ПУБЛИКАЦИЯХ____\n - от ' + str(
+                                         name.get(update.message.from_user.id)) + '\n\n' + messagev)
+            context.bot.send_message(chat_id=295751797,
+                                     text='____ВОПРОС О ПУБЛИКАЦИЯХ____\n - от ' + str(
+                                         name.get(update.message.from_user.id)) + '\n\n' + messagev)
             messagev = ''
     if dictionary.get(update.message.from_user.id) == 7:
         messagev += update.message.text + '\n'
@@ -160,7 +209,11 @@ def text(update, context):
             messagev = messagev.replace('Изменить дизайн', '')
             messagev = messagev.replace('Отправить', '')
             context.bot.send_message(chat_id=84203003,
-                                     text='____ДИЗАЙН____\n - от ' + str(name.get(update.message.from_user.id)) + '\n\n' + messagev)
+                                     text='____ДИЗАЙН____\n - от ' + str(
+                                         name.get(update.message.from_user.id)) + '\n\n' + messagev)
+            context.bot.send_message(chat_id=295751797,
+                                     text='____ДИЗАЙН____\n - от ' + str(
+                                         name.get(update.message.from_user.id)) + '\n\n' + messagev)
             update.message.reply_text(
                 reply_markup=ReplyKeyboardMarkup([['Мне все нравится, можно публиковать', 'Есть доработки.']],
 
@@ -170,7 +223,11 @@ def text(update, context):
             messagev = messagev.replace('Изменить темы', '')
             messagev = messagev.replace('Отправить', '')
             context.bot.send_message(chat_id=84203003,
-                                     text='____ТЕМЫ____\n - от ' + str(name.get(update.message.from_user.id)) + '\n\n' + messagev)
+                                     text='____ТЕМЫ____\n - от ' + str(
+                                         name.get(update.message.from_user.id)) + '\n\n' + messagev)
+            context.bot.send_message(chat_id=295751797,
+                                     text='____ТЕМЫ____\n - от ' + str(
+                                         name.get(update.message.from_user.id)) + '\n\n' + messagev)
             update.message.reply_text(
                 reply_markup=ReplyKeyboardMarkup([['Мне все нравится, можно публиковать', 'Есть доработки.']],
 
@@ -180,12 +237,39 @@ def text(update, context):
             messagev = messagev.replace('Изменить текст', '')
             messagev = messagev.replace('Отправить', '')
             context.bot.send_message(chat_id=84203003,
-                                     text='____ТЕКСТ____\n - от ' + str(name.get(update.message.from_user.id)) + '\n\n' + messagev)
+                                     text='____ТЕКСТ____\n - от ' + str(
+                                         name.get(update.message.from_user.id)) + '\n\n' + messagev)
+            context.bot.send_message(chat_id=295751797,
+                                     text='____ТЕКСТ____\n - от ' + str(
+                                         name.get(update.message.from_user.id)) + '\n\n' + messagev)
             update.message.reply_text(
                 reply_markup=ReplyKeyboardMarkup([['Мне все нравится, можно публиковать', 'Есть доработки.']],
 
                                                  resize_keyboard=1))
             messagev = ''
+    if dictionary.get(update.message.from_user.id) == 8:
+        messagev += update.message.text + '\n'
+        messagev.replace('Нет особых пожеланий', '')
+        messagev.replace('Задать вопрос', '')
+        if update.message.text == 'Отправить':
+            dictionary.update({update.message.from_user.id: 4})
+            context.bot.send_message(chat_id=84203003,
+                                     text='____ЛОГИН И ПАРОЛЬ____\n - от ' + str(
+                                         name.get(update.message.from_user.id)) + '\n\n' + messagev)
+            context.bot.send_message(chat_id=295751797,
+                                     text='____ЛОГИН И ПАРОЛЬ____\n - от ' + str(
+                                         name.get(update.message.from_user.id)) + '\n\n' + messagev)
+            messagev = ''
+        if update.message.text == 'Задать вопрос':
+            dictionary.update({update.message.from_user.id: 4})
+            context.bot.send_message(chat_id=84203003,
+                                     text='____ВОПРОС____\n - от ' + str(
+                                         name.get(update.message.from_user.id)) + '\n\n' + messagev)
+            context.bot.send_message(chat_id=295751797,
+                                     text='____ВОПРОС____\n - от ' + str(
+                                         name.get(update.message.from_user.id)) + '\n\n' + messagev)
+            messagev = ''
+
     if dictionary.get(update.message.from_user.id) == 666:
         messagev = ''
         if update.message.text == 'Отправить сообщение пользователю':
@@ -194,12 +278,17 @@ def text(update, context):
         if update.message.text == 'Список клиентов':
             for i in dictionary.items():
                 context.bot.send_message(chat_id=84203003,
-                                         text='ID- ' + str(i[0]) + "\nSTATUS- " + str(i[1]) + '\nNAME- ' + name.get(i[0]))
+                                         text='ID- ' + str(i[0]) + "\nSTATUS- " + str(i[1]) + '\nNAME- ' + name.get(
+                                             i[0]))
+                context.bot.send_message(chat_id=295751797,
+                                         text='ID- ' + str(i[0]) + "\nSTATUS- " + str(i[1]) + '\nNAME- ' + name.get(
+                                             i[0]))
             messagev = ''
     if dictionary.get(update.message.from_user.id) == 667:
         if update.message.text != 'Отправить сообщение пользователю':
             user = int(update.message.text)
-            update.message.reply_text(text='Что хочешь отправить пользователю - '+ str(name.get(user)) + '\n и отправь S ' + '\n Если хочешь вернуться назад, то отправь B')
+            update.message.reply_text(text='Что хочешь отправить пользователю - ' + str(
+                name.get(user)) + '\n и отправь S ' + '\n Если хочешь вернуться назад, то отправь B')
             dictionary.update({update.message.from_user.id: 668})
     if dictionary.get(update.message.from_user.id) == 668:
         if update.message.text == 'B':
@@ -211,16 +300,16 @@ def text(update, context):
         if update.message.text == 'S':
             context.bot.send_message(chat_id=user, text=messagev)
             dictionary.update({update.message.from_user.id: 666})
-            update.message.reply_text(text='Ты вернулся в главное меню, а сообщение \n\n _______\n'+messagev+'\n ОТПРАВЛЕНО',
-                                      reply_markup=ReplyKeyboardMarkup(
-                                          [['Отправить сообщение пользователю'], ['Список клиентов']],
-                                          resize_keyboard=1))
+            update.message.reply_text(
+                text='Ты вернулся в главное меню, а сообщение \n\n _______\n' + messagev + '\n ОТПРАВЛЕНО',
+                reply_markup=ReplyKeyboardMarkup(
+                    [['Отправить сообщение пользователю'], ['Список клиентов']],
+                    resize_keyboard=1))
             messagev = ''
         else:
             messagev += update.message.text + '\n'
             messagev = messagev.replace(str(user), '')
             messagev = messagev.replace(str(name.get(user)), '')
-
 
 
 def error(update, context):
