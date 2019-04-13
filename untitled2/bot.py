@@ -37,6 +37,7 @@ def start(update, context):
         dictionary.update({str(update.message.from_user.id): 0})
         with open('dictionary1.json', 'w') as f:
             f.write(json.dumps(dictionary))
+        os.rename('dictionary1.json', 'dictionary.json')
 
 
 def help(update, context):
@@ -82,9 +83,7 @@ def text(update, context):
                                      text='Новый клиент ' + str(name.get(update.message.from_user.id)))
             update.message.reply_text('Приветствую, ' + str(name.get(str(update.message.from_user.id))) +
                                       '''! Чтобы начать работать над твоим аккаунтом, мне нужно изучить твой бизнес, твою аудиторию и конкурентов.
-                                      ⠀
                                       Для этого тебе надо скинуть информацию о своей компании, а также сайт и социальные сети. Чем подробнее будут данные, тем будет лучше
-                                      ⠀
                                       Как только напишешь всю информацию, нажми кнопку «Отправить».
                                       Если у тебя есть вопросы, нажми на кнопку «Задать вопрос».
                                       ''',
@@ -96,10 +95,10 @@ def text(update, context):
         messagev.replace(str(name.get(str(update.message.from_user.id))), '')
         if update.message.text == 'Отправить':
             messagev = messagev.replace('Отправить', '')
-            update.message.reply_text(str(name.get(str(update.message.from_user.id))) + ''', этот этап очень важный
+            update.message.reply_text(str(name.get(str(update.message.from_user.id))) + ''', этот этап очень важный!
 Напиши, что бы ты хотел видеть в своём аккаунте? Какие профили в Инстаграм тебе нравятся по дизайну, подаче, стилю?
 А также, напиши, что бы ты никогда не хотел видеть в своём Инстаграм?
-Чем больше будет информации, тем лучше
+Чем больше будет информации, тем лучше.
 После того, как напишешь всю информацию, жми «Отправить».
 Если нечего скидывать, так и отвечай «Нет особых пожеланий».
 ''',
@@ -114,6 +113,7 @@ def text(update, context):
                                          name.get(update.message.from_user.id)) + '\n\n' + messagev)
             messagev = ''
             dictionary.update({str(update.message.from_user.id): 4})
+            
             with open('dictionary.json', 'w') as f:
                 f.write(json.dumps(dictionary))
 
@@ -149,7 +149,7 @@ def text(update, context):
              ⠀
             Как только напишешь всю информацию, нажми кнопку «Отправить».
             Если у тебя есть вопросы, нажми кнопку «Задать вопрос».
-            ''', reply_markup=ReplyKeyboardMarkup([['Отправить', 'Задать вопрос']],
+            ''', reply_markup=ReplyKeyboardMarkup([['Отправить логин и пароль', 'Задать вопрос']],
 
                                                   resize_keyboard=1))
             dictionary.update({str(update.message.from_user.id): 8})
@@ -180,21 +180,8 @@ def text(update, context):
  ⠀
 Как только напишешь всю информацию, нажми кнопку «Отправить».
 Если у тебя есть вопросы, нажми кнопку «Задать вопрос».
-''', reply_markup=ReplyKeyboardMarkup([['Отправить', 'Задать вопрос']],
+''', reply_markup=ReplyKeyboardMarkup([['Отправить логин и пароль', 'Задать вопрос']],
                                       resize_keyboard=1))
-        if update.message.text == 'Отправить':
-            dictionary.update({str(update.message.from_user.id): 4})
-            with open('dictionary.json', 'w') as f:
-                f.write(json.dumps(dictionary))
-
-            context.bot.send_message(chat_id=84203003,
-                                     text='____ЛОГИН И ПАРОЛЬ____\n - от ' + str(
-                                         name.get(str(update.message.from_user.id))) + '\n\n' + messagev)
-            context.bot.send_message(chat_id=295751797,
-                                     text='____ЛОГИН И ПАРОЛЬ____\n - от ' + str(
-                                         name.get(update.message.from_user.id)) + '\n\n' + messagev)
-
-            messagev = ''
         if update.message.text == 'Задать вопрос':
             dictionary.update({str(update.message.from_user.id): 4})
             with open('dictionary.json', 'w') as f:
@@ -213,7 +200,7 @@ def text(update, context):
             with open('dictionary.json', 'w') as f:
                 f.write(json.dumps(dictionary))
 
-            update.message.reply_text(str(name.get(str(update.message.from_user.id))) + ''', супер 
+            update.message.reply_text(str(name.get(str(update.message.from_user.id))) + ''', супер!
 В течении двух недель я буду выкладывать посты в твоём аккаунте.
 Если у тебя появятся вопросы по любой теме, смело пиши и жми на кнопку «Задать вопрос».''',
                                       reply_markup=ReplyKeyboardMarkup(
