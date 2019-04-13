@@ -284,11 +284,11 @@ def text(update, context):
         messagev += update.message.text + '\n'
         messagev.replace('Нет особых пожеланий', '')
         messagev.replace('Задать вопрос', '')
-        if update.message.text == 'Отправить':
+        if update.message.text == 'Отправить логин и пароль':
             dictionary.update({str(update.message.from_user.id): 4})
             with open('dictionary.json', 'w') as f:
                 f.write(json.dumps(dictionary))
-            messagev = messagev.replace('Отправить', '')
+            messagev = messagev.replace('Отправить логин и пароль', '')
             context.bot.send_message(chat_id=84203003,
                                      text='____ЛОГИН И ПАРОЛЬ____\n - от ' + str(
                                          name.get(str(update.message.from_user.id))) + '\n\n' + messagev)
