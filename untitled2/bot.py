@@ -30,9 +30,9 @@ def start(update, context):
     if dictionary.get(str(update.message.from_user.id)) == 666:
         update.message.reply_text(text='admin',
                                   reply_markup=ReplyKeyboardMarkup(
-                                      [['Отправить сообщение пользователю'], ['Список клиентов'] , ['Следующий этап']],
+                                      [['Отправить сообщение пользователю'], ['Список клиентов'], ['Следующий этап']],
                                       resize_keyboard=1))
-    if dictionary.get(str(update.message.from_user.id))  == None:
+    if dictionary.get(str(update.message.from_user.id)) == None:
         update.message.reply_text('Введите пароль')
         dictionary.update({str(update.message.from_user.id): 0})
         with open('dictionary1.json', 'w') as f:
@@ -55,23 +55,23 @@ def text(update, context):
     global user
     global messagev
 
-    if dictionary.get(str(update.message.from_user.id))  == 0:
+    if dictionary.get(str(update.message.from_user.id)) == 0:
         if update.message.text == 'parol123':
             update.message.reply_text('Придумайте себе название')
             dictionary.update({str(update.message.from_user.id): 2})
             with open('dictionary1.json', 'w') as f:
                 f.write(json.dumps(dictionary))
-            os.rename('dictionary1.json','dictionary.json')
+            os.rename('dictionary1.json', 'dictionary.json')
 
         else:
             update.message.reply_text('Неверный пароль, повторите еще.')
-    if dictionary.get(str(update.message.from_user.id))  == 2:
+    if dictionary.get(str(update.message.from_user.id)) == 2:
 
         if update.message.text != 'parol123':
             name.update({str(update.message.from_user.id): update.message.text})
             with open('name1.json', 'w') as f:
-                f.write(json.dumps(name))
-            os.rename('name1.json','name.json')
+                f.write(json.dumps(name, ensure_ascii=False))
+            os.rename('name1.json', 'name.json')
             dictionary.update({str(update.message.from_user.id): 3})
             with open('dictionary1.json', 'w') as f:
                 f.write(json.dumps(dictionary))
@@ -80,6 +80,8 @@ def text(update, context):
             context.bot.send_message(chat_id=84203003,
                                      text='Новый клиент ' + str(name.get(str(update.message.from_user.id))))
             context.bot.send_message(chat_id=295751797,
+                                     text='Новый клиент ' + str(name.get(update.message.from_user.id)))
+            context.bot.send_message(chat_id=461968123,
                                      text='Новый клиент ' + str(name.get(update.message.from_user.id)))
             update.message.reply_text('Приветствую, ' + str(name.get(str(update.message.from_user.id))) +
                                       '''! Чтобы начать работать над твоим аккаунтом, мне нужно изучить твой бизнес, твою аудиторию и конкурентов.
@@ -90,7 +92,7 @@ def text(update, context):
                                       reply_markup=ReplyKeyboardMarkup([['Отправить'], ['Задать вопрос']],
 
                                                                        resize_keyboard=1))
-    if dictionary.get(str(update.message.from_user.id))  == 3:
+    if dictionary.get(str(update.message.from_user.id)) == 3:
         messagev += update.message.text + '\n'
         messagev.replace(str(name.get(str(update.message.from_user.id))), '')
         if update.message.text == 'Отправить':
@@ -111,9 +113,12 @@ def text(update, context):
             context.bot.send_message(chat_id=295751797,
                                      text='____ИНФА О КОМПАНИИ____\n - от ' + str(
                                          name.get(update.message.from_user.id)) + '\n\n' + messagev)
+            context.bot.send_message(chat_id=461968123,
+                                     text='____ИНФА О КОМПАНИИ____\n - от ' + str(
+                                         name.get(update.message.from_user.id)) + '\n\n' + messagev)
             messagev = ''
             dictionary.update({str(update.message.from_user.id): 4})
-            
+
             with open('dictionary.json', 'w') as f:
                 f.write(json.dumps(dictionary))
 
@@ -124,9 +129,11 @@ def text(update, context):
                 name.get(str(update.message.from_user.id))) + '\n\n' + messagev)
             context.bot.send_message(chat_id=295751797, text='____ВОПРОС____\n - от ' + str(
                 name.get(update.message.from_user.id)) + '\n\n' + messagev)
+            context.bot.send_message(chat_id=461968123, text='____ВОПРОС____\n - от ' + str(
+                name.get(update.message.from_user.id)) + '\n\n' + messagev)
 
             messagev = ''
-    if dictionary.get(str(update.message.from_user.id))  == 4:
+    if dictionary.get(str(update.message.from_user.id)) == 4:
         messagev += update.message.text + '\n'
         if update.message.text == 'Отправить.':
             messagev = messagev.replace('Отправить.', '')
@@ -135,6 +142,9 @@ def text(update, context):
                                      text='____КАКИЕ ДОЛЖНЫ БЫТЬ ПОСТЫ____\n - от ' + str(
                                          name.get(str(update.message.from_user.id))) + '\n\n' + messagev)
             context.bot.send_message(chat_id=295751797,
+                                     text='____КАКИЕ ДОЛЖНЫ БЫТЬ ПОСТЫ____\n - от ' + str(
+                                         name.get(update.message.from_user.id)) + '\n\n' + messagev)
+            context.bot.send_message(chat_id=461968123,
                                      text='____КАКИЕ ДОЛЖНЫ БЫТЬ ПОСТЫ____\n - от ' + str(
                                          name.get(update.message.from_user.id)) + '\n\n' + messagev)
             messagev = ''
@@ -161,10 +171,13 @@ def text(update, context):
             with open('dictionary.json', 'w') as f:
                 f.write(json.dumps(dictionary))
 
-            context.bot.send_message(chat_id=84203003,
+            context.bot.send_message(chat_id=84203003, 
                                      text='____КАКИЕ ДОЛЖНЫ БЫТЬ ПОСТЫ____\n - от ' + str(
                                          name.get(str(update.message.from_user.id))) + '\n\n' + 'нет особых пожеланий')
             context.bot.send_message(chat_id=295751797,
+                                     text='____КАКИЕ ДОЛЖНЫ БЫТЬ ПОСТЫ____\n - от ' + str(
+                                         name.get(update.message.from_user.id)) + '\n\n' + 'нет особых пожеланий')
+            context.bot.send_message(chat_id=461968123,
                                      text='____КАКИЕ ДОЛЖНЫ БЫТЬ ПОСТЫ____\n - от ' + str(
                                          name.get(update.message.from_user.id)) + '\n\n' + 'нет особых пожеланий')
 
@@ -190,11 +203,14 @@ def text(update, context):
             context.bot.send_message(chat_id=84203003,
                                      text='____ВОПРОС____\n - от ' + str(
                                          name.get(str(update.message.from_user.id))) + '\n\n' + messagev)
+            context.bot.send_message(chat_id=461968123,
+                                     text='____ВОПРОС____\n - от ' + str(
+                                         name.get(str(update.message.from_user.id))) + '\n\n' + messagev)
             context.bot.send_message(chat_id=295751797,
                                      text='____ВОПРОС____\n - от ' + str(
                                          name.get(update.message.from_user.id)) + '\n\n' + messagev)
             messagev = ''
-    if dictionary.get(str(update.message.from_user.id))  == 5:
+    if dictionary.get(str(update.message.from_user.id)) == 5:
         if update.message.text == 'Мне все нравится':
             dictionary.update({str(update.message.from_user.id): 6})
             with open('dictionary.json', 'w') as f:
@@ -217,7 +233,7 @@ def text(update, context):
                                       reply_markup=ReplyKeyboardMarkup(
                                           [['Изменить дизайн'], ['Изменить темы'], ['Изменить текст']],
                                           resize_keyboard=1))
-    if dictionary.get(str(update.message.from_user.id))  == 6:
+    if dictionary.get(str(update.message.from_user.id)) == 6:
         messagev += update.message.text + '\n'
         if update.message.text == 'Задать вопрос':
             messagev = messagev.replace('Задать вопрос', '')
@@ -226,14 +242,15 @@ def text(update, context):
             context.bot.send_message(chat_id=84203003,
                                      text='____ВОПРОС О ПУБЛИКАЦИЯХ____\n - от ' + str(
                                          name.get(str(update.message.from_user.id))) + '\n\n' + messagev)
-
-
+            context.bot.send_message(chat_id=461968123,
+                                     text='____ВОПРОС О ПУБЛИКАЦИЯХ____\n - от ' + str(
+                                         name.get(update.message.from_user.id)) + '\n\n' + messagev)
 
             context.bot.send_message(chat_id=295751797,
                                      text='____ВОПРОС О ПУБЛИКАЦИЯХ____\n - от ' + str(
                                          name.get(update.message.from_user.id)) + '\n\n' + messagev)
             messagev = ''
-    if dictionary.get(str(update.message.from_user.id))  == 7:
+    if dictionary.get(str(update.message.from_user.id)) == 7:
         messagev += update.message.text + '\n'
         if update.message.text == 'Изменить дизайн':
             messagev = messagev.replace('Изменить дизайн', '')
@@ -242,10 +259,13 @@ def text(update, context):
             context.bot.send_message(chat_id=84203003,
                                      text='____ДИЗАЙН____\n - от ' + str(
                                          name.get(str(update.message.from_user.id))) + '\n\n' + messagev)
+            context.bot.send_message(chat_id=461968123,
+                                     text='____ДИЗАЙН____\n - от ' + str(
+                                         name.get(update.message.from_user.id)) + '\n\n' + messagev)
             context.bot.send_message(chat_id=295751797,
                                      text='____ДИЗАЙН____\n - от ' + str(
                                          name.get(update.message.from_user.id)) + '\n\n' + messagev)
-            update.message.reply_text(text = 'Мы исправим и вышлим новую версию')
+            update.message.reply_text(text='Мы исправим и вышлим новую версию')
             messagev = ''
             with open('dictionary.json', 'w') as f:
                 f.write(json.dumps(dictionary))
@@ -257,6 +277,9 @@ def text(update, context):
             context.bot.send_message(chat_id=84203003,
                                      text='____ТЕМЫ____\n - от ' + str(
                                          name.get(str(update.message.from_user.id))) + '\n\n' + messagev)
+            context.bot.send_message(chat_id=461968123,
+                                     text='____ТЕМЫ____\n - от ' + str(
+                                         name.get(update.message.from_user.id)) + '\n\n' + messagev)
             context.bot.send_message(chat_id=295751797,
                                      text='____ТЕМЫ____\n - от ' + str(
                                          name.get(update.message.from_user.id)) + '\n\n' + messagev)
@@ -272,6 +295,9 @@ def text(update, context):
             context.bot.send_message(chat_id=84203003,
                                      text='____ТЕКСТ____\n - от ' + str(
                                          name.get(str(update.message.from_user.id))) + '\n\n' + messagev)
+            context.bot.send_message(chat_id=461968123,
+                                     text='____ТЕКСТ____\n - от ' + str(
+                                         name.get(update.message.from_user.id)) + '\n\n' + messagev)
             context.bot.send_message(chat_id=295751797,
                                      text='____ТЕКСТ____\n - от ' + str(
                                          name.get(update.message.from_user.id)) + '\n\n' + messagev)
@@ -280,7 +306,7 @@ def text(update, context):
             with open('dictionary.json', 'w') as f:
                 f.write(json.dumps(dictionary))
 
-    if dictionary.get(str(update.message.from_user.id))  == 8:
+    if dictionary.get(str(update.message.from_user.id)) == 8:
         messagev += update.message.text + '\n'
         messagev.replace('Нет особых пожеланий', '')
         messagev.replace('Задать вопрос', '')
@@ -289,10 +315,14 @@ def text(update, context):
             with open('dictionary.json', 'w') as f:
                 f.write(json.dumps(dictionary))
             messagev = messagev.replace('Отправить логин и пароль', '')
+            
             context.bot.send_message(chat_id=84203003,
                                      text='____ЛОГИН И ПАРОЛЬ____\n - от ' + str(
                                          name.get(str(update.message.from_user.id))) + '\n\n' + messagev)
             context.bot.send_message(chat_id=295751797,
+                                     text='____ЛОГИН И ПАРОЛЬ____\n - от ' + str(
+                                         name.get(update.message.from_user.id)) + '\n\n' + messagev)
+            context.bot.send_message(chat_id=461968123,
                                      text='____ЛОГИН И ПАРОЛЬ____\n - от ' + str(
                                          name.get(update.message.from_user.id)) + '\n\n' + messagev)
             messagev = ''
@@ -304,12 +334,15 @@ def text(update, context):
             context.bot.send_message(chat_id=84203003,
                                      text='____ВОПРОС____\n - от ' + str(
                                          name.get(str(update.message.from_user.id))) + '\n\n' + messagev)
+            context.bot.send_message(chat_id=461968123,
+                                     text='____ВОПРОС____\n - от ' + str(
+                                         name.get(str(update.message.from_user.id))) + '\n\n' + messagev)
             context.bot.send_message(chat_id=295751797,
                                      text='____ВОПРОС____\n - от ' + str(
                                          name.get(update.message.from_user.id)) + '\n\n' + messagev)
             messagev = ''
 
-    if dictionary.get(str(update.message.from_user.id))  == 666:
+    if dictionary.get(str(update.message.from_user.id)) == 666:
         messagev = ''
         if update.message.text == 'Отправить сообщение пользователю':
             dictionary.update({str(update.message.from_user.id): 667})
@@ -326,14 +359,16 @@ def text(update, context):
         if update.message.text == 'Список клиентов':
             for i in dictionary.items():
                 context.bot.send_message(chat_id=84203003,
+                                         text='ID- ' + str(i[0]) + "\nSTATUS- " + str(i[1]) + '\nNAME- ' + name.get((i[0])))
+                context.bot.send_message(chat_id=295751797,
+                                         text='ID- ' + str(i[0]) + "\nSTATUS- " + str(i[1]) + '\nNAME- ' + name.get((i[0])))
+                context.bot.send_message(chat_id=461968123,
                                          text='ID- ' + str(i[0]) + "\nSTATUS- " + str(i[1]) + '\nNAME- ' + name.get(
                                              (i[0])))
-                context.bot.send_message(chat_id=295751797,
-                                         text='ID- ' + str(i[0]) + "\nSTATUS- " + str(i[1]) + '\nNAME- ' + name.get(
-                                             i[0]))
+                
             messagev = ''
 
-    if dictionary.get(str(update.message.from_user.id))  == 667:
+    if dictionary.get(str(update.message.from_user.id)) == 667:
         if update.message.text != 'Отправить сообщение пользователю':
             user = int(update.message.text)
             update.message.reply_text(text='Что хочешь отправить пользователю - ' + str(
@@ -342,7 +377,7 @@ def text(update, context):
             with open('dictionary.json', 'w') as f:
                 f.write(json.dumps(dictionary))
 
-    if dictionary.get(str(update.message.from_user.id))  == 668:
+    if dictionary.get(str(update.message.from_user.id)) == 668:
         if update.message.text == 'B':
             dictionary.update({str(update.message.from_user.id): 666})
             with open('dictionary.json', 'w') as f:
@@ -350,7 +385,8 @@ def text(update, context):
 
             update.message.reply_text(text='Ты вернулся в главное меню',
                                       reply_markup=ReplyKeyboardMarkup(
-                                          [['Отправить сообщение пользователю'], ['Список клиентов'], ['Следующий этап']],
+                                          [['Отправить сообщение пользователю'], ['Список клиентов'],
+                                           ['Следующий этап']],
                                           resize_keyboard=1))
         if update.message.text == 'S':
             context.bot.send_message(chat_id=user, text=messagev)
@@ -368,7 +404,7 @@ def text(update, context):
             messagev = messagev.replace(str(user), '')
             messagev = messagev.replace(str(name.get(user)), '')
 
-    if dictionary.get(str(update.message.from_user.id))  == 669:
+    if dictionary.get(str(update.message.from_user.id)) == 669:
         if update.message.text != 'Следующий этап':
             user = int(update.message.text)
             update.message.reply_text(text='Пользователь - ' + str(
@@ -386,13 +422,14 @@ def text(update, context):
             dictionary.update({str(user): 5})
             with open('dictionary.json', 'w') as f:
                 f.write(json.dumps(dictionary))
-            update.message.reply_text(text='Ты вернулся в главное меню, cтатус пользователя'+ str(
-                name.get(str(user)))+ ' изменен на -' + str(dictionary.get(str(user))) ,
+            update.message.reply_text(text='Ты вернулся в главное меню, cтатус пользователя' + str(
+                name.get(str(user))) + ' изменен на -' + str(dictionary.get(str(user))),
                                       reply_markup=ReplyKeyboardMarkup(
                                           [['Отправить сообщение пользователю'], ['Список клиентов'],
                                            ['Следующий этап']],
                                           resize_keyboard=1))
-            context.bot.send_message(chat_id=user, text='Напиши "Мне все нравится", если у ты доволен. Либо "Есть доработки", если они имеются)')
+            context.bot.send_message(chat_id=user,
+                                     text='Напиши "Мне все нравится", если у ты доволен. Либо "Есть доработки", если они имеются)')
         if update.message.text == 'Нет':
             dictionary.update({str(update.message.from_user.id): 666})
             with open('dictionary.json', 'w') as f:
